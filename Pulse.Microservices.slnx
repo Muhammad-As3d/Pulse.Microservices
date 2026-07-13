@@ -1,0 +1,16 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/AuthenticationService/AuthenticationService.csproj" />
+    <Project Path="src/FitnessCalculationService/FitnessCalculationService.csproj" />
+    <Project Path="src/NotificationService/NotificationService.csproj" />
+    <Project Path="src/NutritionService/NutritionService.csproj" />
+    <Project Path="src/ProgressTrackingService/ProgressTrackingService.csproj" />
+    <Project Path="src/SmartCoachService/SmartCoachService.csproj" />
+    <Project Path="src/SubscriptionService/SubscriptionService.csproj" />
+    <Project Path="src/UserProfileService/UserProfileService.csproj" />
+    <Project Path="src/WorkoutService/WorkoutService.csproj" />
+  </Folder>
+  <Folder Name="/src/Shared/">
+    <Project Path="src/Shared/BuildingBlocks/BuildingBlocks.csproj" />
+  </Folder>
+</Solution>
