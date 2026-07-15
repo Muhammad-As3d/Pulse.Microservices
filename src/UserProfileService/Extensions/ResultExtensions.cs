@@ -1,6 +1,4 @@
-﻿using UserProfileService.Abstractions;
-
-namespace UserProfileService.Extensions;
+﻿namespace UserProfileService.Extensions;
 
 public static class ResultExtensions
 {

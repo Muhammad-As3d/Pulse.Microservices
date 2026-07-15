@@ -1,0 +1,10 @@
+﻿global using BuildingBlocks.Abstractions;
+global using FluentValidation;
+global using Mapster;
+global using MediatR;
+global using Microsoft.EntityFrameworkCore;
+global using UserProfileService.Contracts.UserProfiles;
+global using UserProfileService.Entities;
+global using UserProfileService.Errors;
+global using UserProfileService.Interfaces;
+global using UserProfileService.Interfaces.Services;

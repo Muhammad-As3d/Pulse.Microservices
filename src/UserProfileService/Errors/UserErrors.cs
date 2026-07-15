@@ -1,4 +1,4 @@
-﻿using UserProfileService.Abstractions;
+﻿using BuildingBlocks.Abstractions;
 
 namespace UserProfileService.Errors;
 

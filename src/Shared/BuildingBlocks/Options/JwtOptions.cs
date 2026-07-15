@@ -1,4 +1,4 @@
-﻿namespace UserProfileService.Settings;
+﻿namespace BuildingBlocks.Options;
 
 public class JwtOptions
 {

@@ -1,22 +1,13 @@
-﻿using Bulk.Shared.Settings;
+﻿using BuildingBlocks.Behaviors;
+using BuildingBlocks.Extensions;
 using Carter;
-using FluentValidation;
-using Mapster;
 using MapsterMapper;
 using MassTransit;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
-using System.Text;
-using UserProfileService.Abstractions;
 using UserProfileService.Exceptions;
 using UserProfileService.Implementation;
 using UserProfileService.Implementation.Services;
-using UserProfileService.Interfaces;
-using UserProfileService.Interfaces.Services;
 using UserProfileService.Persistence;
-using UserProfileService.Settings;
 
 namespace UserProfileService;
 
@@ -54,7 +45,7 @@ public static class DependencyInjection
         services.AddHttpContextAccessor();
         services.AddProblemDetails();
         services.AddRabbitMqConfiguration(configuration);
-        services.AddAuthenticationConfig(configuration);
+        services.AddAuthenticationConfiguration(configuration);
         services.AddCarter();
 
         var assembly = typeof(DependencyInjection).Assembly;
@@ -83,51 +74,56 @@ public static class DependencyInjection
 
     private static IServiceCollection AddRabbitMqConfiguration(this IServiceCollection services, IConfiguration configuration)
     {
-        var rabbitMq = configuration.GetSection(RabbitMqOptions.SectionName).Get<RabbitMqOptions>();
+        //var options = configuration.GetSection(RabbitMqOptions.SectionName).Get<RabbitMqOptions>();
 
-        services.AddMassTransit(x =>
+        //services.AddMassTransit(x =>
+        //{
+        //    x.AddConsumers(typeof(DependencyInjection).Assembly);
+
+        //    x.UsingRabbitMq((context, cfg) =>
+        //    {
+        //        cfg.Host(rabbitMq!.Host, "/", h =>
+        //        {
+        //            h.Username(rabbitMq.Us);
+        //            h.Password(rabbitMq.Password);
+        //        });
+
+        //        cfg.ConfigureEndpoints(context);
+        //    });
+        //});
+
+        services.AddMassTransitWithRabbitMq(configuration, cfg =>
         {
-            x.AddConsumers(typeof(DependencyInjection).Assembly);
-
-            x.UsingRabbitMq((context, cfg) =>
-            {
-                cfg.Host(rabbitMq!.Host, "/", h =>
-                {
-                    h.Username(rabbitMq.UserName);
-                    h.Password(rabbitMq.Password);
-                });
-
-                cfg.ConfigureEndpoints(context);
-            });
+            cfg.AddConsumers(typeof(DependencyInjection).Assembly);
         });
 
         return services;
     }
 
-    private static IServiceCollection AddAuthenticationConfig(this IServiceCollection services, IConfiguration configuration)
-    {
-        var jwtSettings = configuration.GetSection(JwtOptions.SectionName).Get<JwtOptions>();
+    //private static IServiceCollection AddAuthenticationConfig(this IServiceCollection services, IConfiguration configuration)
+    //{
+    //    var jwtSettings = configuration.GetSection(JwtOptions.SectionName).Get<JwtOptions>();
 
-        services.AddAuthentication(options =>
-        {
-            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        })
-        .AddJwtBearer(o =>
-        {
-            o.SaveToken = true;
-            o.TokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuerSigningKey = true,
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateLifetime = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings!.Key)),
-                ValidIssuer = jwtSettings.Issuer,
-                ValidAudience = jwtSettings.Audience,
-            };
-        });
+    //    services.AddAuthentication(options =>
+    //    {
+    //        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    //        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    //    })
+    //    .AddJwtBearer(o =>
+    //    {
+    //        o.SaveToken = true;
+    //        o.TokenValidationParameters = new TokenValidationParameters
+    //        {
+    //            ValidateIssuerSigningKey = true,
+    //            ValidateIssuer = true,
+    //            ValidateAudience = true,
+    //            ValidateLifetime = true,
+    //            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings!.Key)),
+    //            ValidIssuer = jwtSettings.Issuer,
+    //            ValidAudience = jwtSettings.Audience,
+    //        };
+    //    });
 
-        return services;
-    }
+    //    return services;
+    //}
 }
