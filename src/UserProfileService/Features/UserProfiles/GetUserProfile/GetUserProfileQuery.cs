@@ -1,14 +1,4 @@
-﻿using Mapster;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-using UserProfileService.Abstractions;
-using UserProfileService.Contracts.UserProfiles;
-using UserProfileService.Entities;
-using UserProfileService.Errors;
-using UserProfileService.Interfaces;
-using UserProfileService.Interfaces.Services;
-
-namespace UserProfileService.Features.UserProfiles.GetUserProfile;
+﻿namespace UserProfileService.Features.UserProfiles.GetUserProfile;
 
 public record GetUserProfileQuery : IRequest<Result<UserProfileResponse>>;
 

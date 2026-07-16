@@ -1,4 +1,4 @@
-﻿namespace UserProfileService.Abstractions;
+﻿namespace BuildingBlocks.Abstractions;
 
 public class Result
 {

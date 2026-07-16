@@ -1,8 +1,4 @@
-﻿using FluentValidation;
-using MediatR;
-using UserProfileService.Abstractions;
-
-namespace UserProfileService.Features.UserProfiles.UpdateProfile;
+﻿namespace UserProfileService.Features.UserProfiles.UpdateProfile;
 
 public record UpdateProfileCommand(
     string FirstName,

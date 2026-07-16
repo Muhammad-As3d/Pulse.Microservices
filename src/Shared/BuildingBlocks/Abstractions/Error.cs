@@ -1,4 +1,4 @@
-﻿namespace UserProfileService.Abstractions;
+﻿namespace BuildingBlocks.Abstractions;
 
 public record Error(string Code, string Description, int? StatusCode)
 {

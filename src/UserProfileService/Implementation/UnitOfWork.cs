@@ -1,5 +1,4 @@
 ﻿using UserProfileService.Implementation.Repositories;
-using UserProfileService.Interfaces;
 using UserProfileService.Interfaces.Repositories;
 using UserProfileService.Persistence;
 

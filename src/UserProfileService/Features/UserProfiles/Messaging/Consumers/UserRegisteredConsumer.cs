@@ -1,4 +1,4 @@
-﻿using Bulk.Shared.Contracts.Events;
+﻿using BuildingBlocks.Messaging.Events;
 using Mapster;
 using MassTransit;
 using MediatR;

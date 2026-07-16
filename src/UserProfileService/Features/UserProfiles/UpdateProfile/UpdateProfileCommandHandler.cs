@@ -1,12 +1,4 @@
-﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
-using UserProfileService.Abstractions;
-using UserProfileService.Entities;
-using UserProfileService.Errors;
-using UserProfileService.Interfaces;
-using UserProfileService.Interfaces.Services;
-
-namespace UserProfileService.Features.UserProfiles.UpdateProfile;
+﻿namespace UserProfileService.Features.UserProfiles.UpdateProfile;
 
 internal class UpdateProfileCommandHandler(IUnitOfWork unitOfWork, ICurrentUser currentUser) : IRequestHandler<UpdateProfileCommand, Result>
 {
