@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using UserProfileService.Entities;
 
-namespace UserProfileService.Persistence.EntitiesConfiguration;
+namespace UserProfileService.Persistence.EntitiesConfigurations;
 
 public class UserPreferenceConfiguration : IEntityTypeConfiguration<UserPreference>
 {

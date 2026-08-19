@@ -3,8 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using NotificationService.Abstractions;
 using NotificationService.Entities;
 using NotificationService.Errors;
-using NotificationService.InterFaces;
-using NotificationService.InterFaces.Services;
+using NotificationService.Interfaces;
+using NotificationService.Interfaces.Services;
 
 namespace NotificationService.Features.Notifications.UpdateNotificationRead;
 

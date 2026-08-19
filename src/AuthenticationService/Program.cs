@@ -11,4 +11,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.MapGet("auth/name", () =>
+{
+    return Results.Ok("Success result");
+});
+
 app.Run();

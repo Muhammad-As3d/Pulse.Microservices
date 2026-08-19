@@ -9,7 +9,10 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
+COPY ["Directory.Build.props", "."]
+COPY ["Directory.Build.targets", "."]
 COPY ["src/UserProfileService/UserProfileService.csproj", "src/UserProfileService/"]
+COPY ["src/Shared/BuildingBlocks/BuildingBlocks.csproj", "src/Shared/BuildingBlocks/"]
 RUN dotnet restore "./src/UserProfileService/UserProfileService.csproj"
 COPY . .
 WORKDIR "/src/src/UserProfileService"

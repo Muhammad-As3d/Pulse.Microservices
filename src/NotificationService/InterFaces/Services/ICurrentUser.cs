@@ -1,4 +1,4 @@
-﻿namespace NotificationService.InterFaces.Services;
+﻿namespace NotificationService.Interfaces.Services;
 
 public interface ICurrentUser
 {

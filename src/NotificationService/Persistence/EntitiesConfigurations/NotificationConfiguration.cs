@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NotificationService.Entities;
 
-namespace NotificationService.Persistence.EntitiesConfiguration;
+namespace NotificationService.Persistence.EntitiesConfigurations;
 
 public class NotificationConfiguration : IEntityTypeConfiguration<Notification>
 {

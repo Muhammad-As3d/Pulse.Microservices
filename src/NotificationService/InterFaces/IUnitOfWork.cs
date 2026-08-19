@@ -1,6 +1,6 @@
-﻿using NotificationService.InterFaces.Repositories;
+﻿using NotificationService.Interfaces.Repositories;
 
-namespace NotificationService.InterFaces;
+namespace NotificationService.Interfaces;
 
 public interface IUnitOfWork
 {

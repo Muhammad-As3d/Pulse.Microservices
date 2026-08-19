@@ -23,7 +23,7 @@ public static class DependencyInjection
         services.AddOpenApi();
         services.AddAuthenticationConfiguration(configuration);
 
-        services.AddScoped<IUnitOfWork, UnitOFWork>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<ICurrentUser, CurrentUser>();
 
         var assembly = typeof(DependencyInjection).Assembly;
@@ -31,7 +31,7 @@ public static class DependencyInjection
         services.AddMediatR(cfg =>
         {
             cfg.RegisterServicesFromAssembly(assembly);
-            cfg.AddBehavior(typeof(ValidationBehavior<,>));
+            cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
         });
 
         //services.AddMassTransitWithRabbitMq(configuration, cfg =>

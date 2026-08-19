@@ -1,5 +1,17 @@
 <Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".dockerignore" />
+    <File Path=".env" />
+    <File Path=".gitattributes" />
+    <File Path=".gitignore" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Build.targets" />
+    <File Path="docker-compose.yml" />
+    <File Path="global.json" />
+    <File Path="README.md" />
+  </Folder>
   <Folder Name="/src/">
+    <Project Path="src/ApiGateway/ApiGateway.csproj" Id="9da0b5a6-3a28-4507-a3ea-fcc5f00605d3" />
     <Project Path="src/AuthenticationService/AuthenticationService.csproj" />
     <Project Path="src/FitnessCalculationService/FitnessCalculationService.csproj" />
     <Project Path="src/NotificationService/NotificationService.csproj" />
@@ -12,5 +24,8 @@
   </Folder>
   <Folder Name="/src/Shared/">
     <Project Path="src/Shared/BuildingBlocks/BuildingBlocks.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/BuildingBlocks.Tests/BuildingBlocks.Tests.csproj" />
   </Folder>
 </Solution>

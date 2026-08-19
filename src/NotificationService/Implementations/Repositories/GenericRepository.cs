@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using NotificationService.InterFaces.Repositories;
+using NotificationService.Interfaces.Repositories;
 using NotificationService.Persistence;
 
 namespace NotificationService.Implementations.Repositories;
