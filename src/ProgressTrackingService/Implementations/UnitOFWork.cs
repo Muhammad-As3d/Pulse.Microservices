@@ -5,7 +5,7 @@ using ProgressTrackingService.Persistence;
 
 namespace ProgressTrackingService.Implementations;
 
-public class UnitOFWork(ApplicationDbContext context) : IUnitOfWork
+public class UnitOfWork(ApplicationDbContext context) : IUnitOfWork
 {
     private readonly Dictionary<Type, object> _repositories = [];
 

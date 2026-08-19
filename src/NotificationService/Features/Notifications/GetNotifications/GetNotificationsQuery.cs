@@ -3,7 +3,7 @@ using MediatR;
 using NotificationService.Abstractions;
 using NotificationService.Contracts.Notifications;
 using NotificationService.Entities;
-using NotificationService.InterFaces;
+using NotificationService.Interfaces;
 
 namespace NotificationService.Features.Notifications.GetNotifications;
 

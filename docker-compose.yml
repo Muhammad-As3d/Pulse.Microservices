@@ -1,0 +1,184 @@
+x-service-defaults: &service-defaults
+  restart: unless-stopped 
+  networks:
+    - pulse-network
+  environment:
+    ASPNETCORE_ENVIRONMENT: Production
+    ASPNETCORE_HTTP_PORTS: 8080
+
+x-sql-service: &sql-service 
+  <<: *service-defaults
+  depends_on:
+    sqlserver:
+      condition: service_healthy
+
+services:
+  gateway:
+    <<: *service-defaults
+    build:
+      context: .
+      dockerfile: src/ApiGateway/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_HTTP_PORTS: 8080
+      ReverseProxy__Clusters__cluster1__Destinations__destination1__Address: http://authenticationservice:8080/
+    depends_on:
+      authenticationservice:
+        condition: service_started
+      workoutservice:
+        condition: service_started
+      userprofileservice:
+        condition: service_started
+      notificationservice:
+        condition: service_started
+
+  authenticationservice:
+    <<: *service-defaults
+    build:
+      context: .
+      dockerfile: src/AuthenticationService/Dockerfile
+    ports:
+      - "5001:8080"
+
+  workoutservice:
+    <<: *sql-service
+    build:
+      context: .
+      dockerfile: src/WorkoutService/Dockerfile
+    ports:
+      - "5002:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_HTTP_PORTS: 8080
+      ConnectionStrings__DefaultConnection: "Server=sqlserver;Database=WorkoutDb;User Id=sa;Password=${MSSQL_SA_PASSWORD:?Set MSSQL_SA_PASSWORD in .env};TrustServerCertificate=True"
+
+  userprofileservice:
+    <<: *sql-service
+    build:
+      context: .
+      dockerfile: src/UserProfileService/Dockerfile
+    ports:
+      - "5003:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_HTTP_PORTS: 8080
+      ConnectionStrings__DefaultConnection: "Server=sqlserver;Database=UserProfileDb;User Id=sa;Password=${MSSQL_SA_PASSWORD:?Set MSSQL_SA_PASSWORD in .env};TrustServerCertificate=True"
+      Jwt__Key: "${JWT_SIGNING_KEY:?Set JWT_SIGNING_KEY in .env}"
+      Jwt__Issuer: AuthenticationService
+      Jwt__Audience: Pulse
+      RabbitMQ__Host: rabbitmq
+      RabbitMQ__UserName: "${RABBITMQ_USER:-pulse}"
+      RabbitMQ__Password: "${RABBITMQ_PASSWORD:?Set RABBITMQ_PASSWORD in .env}"
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+
+  notificationservice:
+    <<: *sql-service
+    build:
+      context: .
+      dockerfile: src/NotificationService/Dockerfile
+    ports:
+      - "5004:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_HTTP_PORTS: 8080
+      ConnectionStrings__DefaultConnection: "Server=sqlserver;Database=NotificationServiceDb;User Id=sa;Password=${MSSQL_SA_PASSWORD:?Set MSSQL_SA_PASSWORD in .env};TrustServerCertificate=True"
+      Jwt__Key: "${JWT_SIGNING_KEY:?Set JWT_SIGNING_KEY in .env}"
+      Jwt__Issuer: AuthenticationService
+      Jwt__Audience: Pulse
+
+  progresstrackingservice: 
+    <<: *sql-service
+    build:
+      context: .
+      dockerfile: src/ProgressTrackingService/Dockerfile 
+    ports:
+      - "5005:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_HTTP_PORTS: 8080
+      ConnectionStrings__DefaultConnection: "Server=sqlserver;Database=ProgressTrackingDb;User Id=sa;Password=${MSSQL_SA_PASSWORD:?Set MSSQL_SA_PASSWORD in .env};TrustServerCertificate=True"
+      Jwt__Key: "${JWT_SIGNING_KEY:?Set JWT_SIGNING_KEY in .env}"
+      Jwt__Issuer: AuthenticationService
+      Jwt__Audience: Pulse
+
+  nutritionservice:
+    <<: *service-defaults
+    build:
+      context: .
+      dockerfile: src/NutritionService/Dockerfile
+    ports:
+      - "5006:8080"
+
+  fitnesscalculationservice:
+    <<: *service-defaults
+    build:
+      context: .
+      dockerfile: src/FitnessCalculationService/Dockerfile
+    ports:
+      - "5007:8080"
+
+  subscriptionservice:
+    <<: *service-defaults
+    build:
+      context: .
+      dockerfile: src/SubscriptionService/Dockerfile
+    ports:
+      - "5008:8080"
+
+  smartcoachservice:
+    <<: *service-defaults
+    build:
+      context: .
+      dockerfile: src/SmartCoachService/Dockerfile
+    ports:
+      - "5009:8080"
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    restart: unless-stopped
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "${MSSQL_SA_PASSWORD:?Set MSSQL_SA_PASSWORD in .env}"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+    networks:
+      - pulse-network
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -C -S localhost -U sa -P \"$$MSSQL_SA_PASSWORD\" -Q \"SELECT 1\" >/dev/null || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  rabbitmq:
+    image: rabbitmq:4-management
+    restart: unless-stopped
+    environment:
+      RABBITMQ_DEFAULT_USER: "${RABBITMQ_USER:-pulse}"
+      RABBITMQ_DEFAULT_PASS: "${RABBITMQ_PASSWORD:?Set RABBITMQ_PASSWORD in .env}"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - pulse-network
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+volumes:
+  sqlserver-data:
+
+networks:
+  pulse-network:
+    driver: bridge

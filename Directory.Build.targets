@@ -1,0 +1,13 @@
+<Project>
+  <!-- Keep shared package versions consistent without duplicating edits in every project. -->
+  <ItemGroup>
+    <PackageReference Update="Microsoft.AspNetCore.OpenApi" Version="10.0.10" />
+    <PackageReference Update="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.10" />
+    <PackageReference Update="Microsoft.EntityFrameworkCore" Version="10.0.10" />
+    <PackageReference Update="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.10" />
+    <PackageReference Update="Microsoft.EntityFrameworkCore.Tools" Version="10.0.10" />
+    <PackageReference Update="MediatR" Version="14.2.0" />
+    <PackageReference Update="Mapster" Version="10.0.11" />
+    <PackageReference Update="Scalar.AspNetCore" Version="2.16.12" />
+  </ItemGroup>
+</Project>

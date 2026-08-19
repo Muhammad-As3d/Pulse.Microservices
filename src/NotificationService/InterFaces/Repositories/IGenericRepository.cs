@@ -1,4 +1,4 @@
-﻿namespace NotificationService.InterFaces.Repositories;
+﻿namespace NotificationService.Interfaces.Repositories;
 
 public interface IGenericRepository<T> where T : class
 {

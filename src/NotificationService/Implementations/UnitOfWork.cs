@@ -1,6 +1,6 @@
 ﻿using NotificationService.Implementations.Repositories;
-using NotificationService.InterFaces;
-using NotificationService.InterFaces.Repositories;
+using NotificationService.Interfaces;
+using NotificationService.Interfaces.Repositories;
 using NotificationService.Persistence;
 
 namespace NotificationService.Implementations;

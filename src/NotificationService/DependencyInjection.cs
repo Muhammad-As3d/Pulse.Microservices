@@ -1,16 +1,13 @@
 ﻿using Carter;
 using Mapster;
 using MapsterMapper;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using BuildingBlocks.Extensions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using NotificationService.Implementations;
 using NotificationService.Implementations.Services;
-using NotificationService.InterFaces;
-using NotificationService.InterFaces.Services;
+using NotificationService.Interfaces;
+using NotificationService.Interfaces.Services;
 using NotificationService.Persistence;
-using NotificationService.Settings;
-using System.Text;
 
 namespace NotificationService;
 
@@ -23,8 +20,9 @@ public static class DependencyInjection
 
         services.AddOpenApi();
         services.AddCarter();
-        services.AddAuthenticationConfig(configuration);
+        services.AddAuthenticationConfiguration(configuration);
         services.AddAuthorization();
+        services.AddHttpContextAccessor();
 
         var assembly = typeof(DependencyInjection).Assembly;
 
@@ -44,31 +42,4 @@ public static class DependencyInjection
         return services;
     }
 
-    private static IServiceCollection AddAuthenticationConfig(this IServiceCollection services, IConfiguration configuration)
-    {
-        var jwtSettings = configuration.GetSection(JwtOptions.SectionName).Get<JwtOptions>()
-            ?? throw new InvalidOperationException("JWT settings are not configured properly.");
-
-        services.AddAuthentication(options =>
-        {
-            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        })
-        .AddJwtBearer(o =>
-        {
-            o.SaveToken = true;
-            o.TokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuerSigningKey = true,
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateLifetime = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings!.Key)),
-                ValidIssuer = jwtSettings.Issuer,
-                ValidAudience = jwtSettings.Audience,
-            };
-        });
-
-        return services;
-    }
 }
